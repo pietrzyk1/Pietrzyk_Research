@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Pietrzyk Research Group</title>
+    <style>
+
+    /*Define global variables*/
+    :root {
+        --tab-size: 900px; /*Width that the content will spread across in the tab*/
+        --indented-tab-size: calc(var(--tab-size) - 100px); /*Width of the people tab*/
+    }
+
+    /*This causes the scroll bar on the right-hand-side to always appear
+    (so the page does not resize between short and long tabs)*/
+    html {
+        overflow-y: scroll;
+    }
+
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background-color: #f4f4f4;
+    }
+    header {
+        background-color: #f4f4f4;
+        color: #180B01;
+        padding: 20px;
+        text-align: center;
+        display: flex;
+        align-items: flex-start;
+        position: relative;
+        height: 100px;
+    }
+    header img{
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        height: 50px;
+        width: auto;
+    }
+    .header-title {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+        font-size: 30px;
+    }
+    nav {
+        display: flex;
+        justify-content: center;
+        background-color: #f4f4f4;
+    }
+    nav button {
+        padding: 14px 20px;
+        background: none;
+        border: none;
+        border-bottom: 3px solid transparent; /* Start with transparent */
+        transition: border-bottom 0.3s ease;
+        color: #180B01;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    nav button:hover, nav button.active {
+        background-color: #E5E4E2;
+        border-bottom: 3px solid #ED6D0B;
+    }
+
+    .tab-content {
+        display: none;
+        padding: 20px;
+        background-color: white;
+    }
+    .tab-content.active {
+        display: block;
+    }
+
+
+
+
+
+    /*Style for each tab*/
+    .tab-container {
+        max-width: var(--tab-size);
+        margin: 25px auto;
+        font-family: Arial, sans-serif;
+    }
+
+    /*Container for individual research entries on the Research tab*/
+    .research-item-container {
+        display: block;
+        margin-bottom: 75px;
+    }
+    .research-gif-container {
+        display: block;
+        width: 485px;
+        margin: 0 auto;
+    }
+    .research-gif-container p {
+        margin-bottom: 0px;
+    }
+    .cropped-gif {
+        width: 485px;
+        height: 50px; /*42px*/
+        overflow: hidden;
+        position: relative;
+    }
+    .cropped-gif img {
+        position: absolute;
+        bottom: -42px; /*-35px*/
+        left: -84px; /*-70px*/
+    }
+    
+
+    /*Style for publications list*/
+    ol.reversed-list {
+        list-style-position: outside;
+        padding-left: 40px;
+        padding-right: 15px;
+    }
+    ol.reversed-list li {
+        margin-bottom: 10px;
+    }
+
+
+    /*Container for organizing the people on the People tab*/
+    .people-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        max-width: var(--indented-tab-size);
+        margin: 0 auto;
+    }
+    /*Container for person profile on People tab*/
+    .person-profile-container {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+    .person-profile-label-container {
+        display: block;
+        align-items: center;
+    }
+    .person-profile-label-container h2 {
+        margin: 0;
+        font-size: 24px;
+    }
+    .person-profile-label-container p {
+        margin-top: 8px;
+        max-width: 400px;
+        color: #555;
+    }
+    .circular-photo {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: center 20%;
+    }
+
+
+    /*Container for organizing the resources on the Resources tab*/
+    .resource-container {
+        padding-left: 15px;
+    }
+    /*Container for entries in the Resources tab*/
+    .resource-entry-container {
+        display: block;
+    }
+    .resource-entry-container a h2 {
+        margin: 0;
+        font-size: 1.3em;
+    }
+    .resource-entry-container p {
+        margin-top: 8px;
+    }
+
+
+    /*Hyperlink appearance*/
+    a {
+        color: #ED6D0B;
+        text-decoration: none;
+    }
+    a:hover {
+        color: #ED6D0B;
+        text-decoration: underline;
+        transition: color 0.3s ease;
+    }
+
+
+
+  
+    /*Footer style*/   
+    footer {
+      text-align: center;
+      padding-top: 35px;
+      padding-bottom: 70px;
+      background-color: #f4f4f4;
+      color: black;
+      position: relative;
+      bottom: 0px;
+      width: 100%;
+    }
+
+
+    /* Responsive Design */
+    @media (max-width: var(--tab-size)) {
+        .contact-section {
+            margin: 2rem 1rem;
+            padding: 1.5rem;
+        }
+    }
+
+  </style>
+</head>
+
+
+
+<body>
+
+    <!--Header-->
+    <header>
+        <!--<img src="" alt="Institution_Logo">-->
+        <h1 class="header-title">Pietrzyk Research Group</h1>
+    </header>
+
+
+
+    <!--Navigation Buttons-->
+    <nav>
+        <button class="tab-button active" onclick="showTab('home')">Home</button>
+        <button class="tab-button" onclick="showTab('research')">Research</button>
+        <button class="tab-button" onclick="showTab('publications')">Publications</button>
+        <button class="tab-button" onclick="showTab('people')">People</button>
+        <button class="tab-button" onclick="showTab('resources')">Resources</button>
+        <button class="tab-button" onclick="showTab('contact')">Contact</button>
+    </nav>
+
+
+
+    <!--Home Tab-->
+    <section id="home" class="tab-content active">
+        <div class="tab-container">
+
+            <h2>Welcome!</h2>
+
+            <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 50px;">
+                <div style="display: block;">
+                    <p>We are an interdisciplinary team of researchers studying multi-physical, multiscale
+                        phenomena in Earth and energy systems involving porous media. In particular, we
+                        are interested in understanding how physical dynamics and structure at the pore
+                        scale (and smaller) affect system-scale behaviors, and how such effects can be
+                        predicted and optimized for civil and environmental engineering applications.
+                    </p>
+                    <p>We primarily focus on systems involving flow and reactive transport, and target
+                        complexities relevant to practical systems. This includes, but is not limited to,
+                        systems with large reaction networks, intricate multi-physical couplings,
+                        heterogeneous media, evolving pore-scale structures and interfaces, and physical
+                        regimes that challenge traditional models.
+                    </p>
+                    <p>In our approach to understand the multiscale traversal of physics and structure, we
+                        develop, apply, and study novel multiscale models, modeling techniques, and tools
+                        that scale with system complexities. In general, we are interested in combining
+                        applied mathematics, numerical and symbolic computation, data-driven and
+                        optimization approaches, and experimental techniques to better understand our
+                        targeted complexities, and how they can be modeled efficiently, accurately, and
+                        reliably for engineering purposes.
+                    </p>
+                </div>
+
+                <div style="display: block;">
+                    <img src="images/Geological_and_Electrochemical_Hierarchy.png" width="300px" alt="Geological_and_Electrochemical_Hierarchy.png">
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+
+    <!--Research Tab-->
+    <section id="research" class="tab-content">
+        <div class="tab-container">
+            
+            <h2>Multiscale Modeling for Heterogeneous Porous Media</h2>
+            
+            <div class="research-item-container">
+                <div class="research-gif-container">
+                    <p style="font-family: 'Times New Roman', Times, serif; font-style: italic;">Pore-scale Concentration</p>
+                    <div class="cropped-gif">
+                        <img src="images/MoFA_Porescale2.gif" width="600px" loading="eager" alt="MoFA_Porescale2.gif">
+                    </div>
+                    <p style="font-family: 'Times New Roman', Times, serif; font-style: italic;">Average Pore-scale Concentration</p>
+                    <div class="cropped-gif">
+                        <img src="images/MoFA_Avg_Porescale2.gif" width="600px" loading="eager" alt="MoFA_Avg_Porescale2.gif">
+                    </div>
+                    <p style="font-family: 'Times New Roman', Times, serif; font-style: italic;">MoFA Model Average Concentration</p>
+                    <div class="cropped-gif">
+                        <img src="images/MoFA_Upscaled2.gif" width="600px" loading="eager" alt="MoFA_Upscaled2.gif">
+                    </div>
+                    <p style="font-family: 'Times New Roman', Times, serif;">Advective-diffusive transport through
+                        fractured media for an oscillating inlet concentration on the left boundary. The MoFA model
+                        captures the average transport behavior, and is about 600 times faster to solve than the
+                        corresponding pore-scale model.
+                    </p>
+                </div>
+                
+                <div style="display: block;">
+                    <p>Despite the ubiquity of heterogeneous porous media in Earth and energy engineering
+                        systems, the effects of heterogeneity on macroscopic flow and transport phenomena
+                        continue to elude our fundamental understandings and coarse-grained models. Traditionally,
+                        rigorous upscaling theories (e.g., Homogenization Theory and the Method of Volume
+                        Averaging) have provided robust models for quantifying, characterizing, and predicting
+                        coarse-scale behaviors when fine-scale and coarse-scale phenomena (i.e., structural
+                        features and physical dynamics) exist on different spatiotemporal scales (i.e., when
+                        there is a clear separation of scales). As heterogeneities intertwine fine- and
+                        coarse-scale phenomena, traditional upscaling theories tend to lose validity, and new
+                        methodologies for studying flow and transport in heterogeneous porous media are needed.
+                        To better understand and quantify the effects of heterogeneity and model macroscopic
+                        physics in porous media, we have developed the Method of Finite Averages (MoFA). This
+                        rigorous upscaling methodology can accommodate general heterogeneous porous media, a
+                        wide range of physical regimes, and nonlocal effects (i.e., system-scale boundary
+                        effects). So far, we have demonstrated the advantages of MoFA in modeling flow and
+                        advective-diffusive transport in heterogeneous porous media. In our future work, we
+                        plan to continue advancing, applying, and studying MoFA in order to better understand
+                        how the effects of heterogeneous porous media can be quantified, characterizied,
+                        and predicted.
+                    </p>
+                </div>
+            </div>
+
+
+            <h2>Autonomous Frameworks for Multiscale Model Derivation and Discovery</h2>
+                    
+            <div class="research-item-container">
+                <div style="display: block; width: 600px; margin: 0 auto;">
+                    <img src="images/Automated_Multiscale_Model_Development.png" width="600px" alt="Automated_Multiscale_Model_Development.png">
+                </div>
+
+                <div style="display: block;">
+                    <p>In traditional upscaling techniques, differential equations describing a system's
+                        fine-scale dynamics (e.g., equations describing pore-scale physics) are used to
+                        systematically derive upscaled models, which predict the system's coarse-scale
+                        dynamics (e.g., equations for the macroscopic physics in a porous medium) with
+                        known modeling error thresholds. The derivations associated with these
+                        techniques are often time-consuming and become quickly intractable for practical
+                        systems (e.g., multi-physical systems with many equations). To make upscaling
+                        feasible for practical utilization, we developed a symbolic-computational
+                        framework called Symbolica for automating the implementation of upscaling
+                        techniques. In other words, Symbolica accepts differential equations describing
+                        the pore-scale physics in a porous medium and automatically derives the
+                        corresponding upscaled model in seconds. By automating and accelerating the
+                        upscaling procedure, Symbolica democratizes rigorous multiscale modeling
+                        techniques for broad utilization and real-world applications.
+                    </p>
+                </div>
+            </div>
+
+
+            <h2>Advancements and Applications of Upscaling Theory</h2>
+                    
+            <div class="research-item-container">
+                <div style="display: block; width: 600px; margin: 0 auto;">
+                    <img src="images/Advancements_and_Applications_of_Upscaling.png" width="600px" alt="Advancements_and_Applications_of_Upscaling.png">
+                </div>
+
+                <div style="display: block;">
+                    <p>Traditional upscaling techniques, such as Homogenization Theory and the Method of Volume
+                        Averaging, largely provide the foundation for our work in multiscale modeling and porous
+                        media theory. In addition to deriving new methodologies from such techniques (e.g., the
+                        Method of Finite Averages) and developing automated upscaling frameworks (e.g., Symbolica),
+                        we are broadly interested in advancing upscaling theory for multiscale model discovery,
+                        and applying our advancements to Earth and energy systems for engineering analysis and
+                        design. For example, our previous work extended the applicability of Homogenization
+                        Theory to more reactive physical regimes in advection-diffusion-reaction systems. Under
+                        this extension, we discovered novel terms in our upscaled models describing emergent
+                        phenomena. We then applied the mathematical strategy behind our extension to model heat
+                        transfer in electric vehicle battery packs under practical thermal runaway conditions that
+                        challenged previous models. Oftentimes, our work in advancing upscaling theory is
+                        integrated into Symbolica, our automated upscaling framework, so that it can be applied
+                        to diverse problems in an expedited and democratized fashion.
+                    </p>
+                </div>
+            </div>
+
+
+            <h2>Automated Spectral Methods for Phase-field Modeling</h2>
+                    
+            <div class="research-item-container">
+                <div style="display: block; width: 600px; margin: 35px auto;">
+                    <img src="images/Automated_Spectral_Methods_for_Phase_Field_Modeling.png" width="600px" alt="Automated_Spectral_Methods_for_Phase_Field_Modeling.png">
+                </div>
+
+                <div style="display: block;">
+                    <p>A variety of mesoscale phenomena in Earth and energy systems exhibit dynamic interfaces and
+                        evolving structures (e.g., multi-phase flows, precipitation and dissolution, crack formation
+                        and propagation, phase transitions, and grain growth). Such complexities can be modeled using
+                        a combination of phase-field models (PFMs) and spectral numerical methods (SNMs), as the
+                        computationl expense of solving PFMs is offset by the computational efficiency of SNMs. However,
+                        applying PFMs and SNMs simultaneously can be challenging: while PFMs are often highly nonlinear,
+                        SNMs require additional analytical preparations and numerical-solving algorithms, particularly
+                        when handling nonlinearities. To facilitate combined implementations of PFMs and SNMs, we have
+                        developed Fouriera, a symbolic-numerical computing framework that fully automates the
+                        implementation of PFMs with SNMs. In other words, given a phase-field model in symbolic form,
+                        Fouriera automatically completes the analytical preparations required to solve the model via
+                        the Fourier spectral method, and solves the model. In our future work, we hope to use Fouriera
+                        to study how the aforementioned mesoscale phenomena influence macroscale behaviors and
+                        effective material properties. This work has been performed in collaboration with Bo Wang, who is
+                        currently at The Pennsylvania State University.
+                    </p>
+                </div>
+            </div>
+
+
+            <h2>The Multiscale Microfluidics Laboratory</h2>
+                    
+            <div class="research-item-container">
+                <div style="display: block; width: 250px; margin: 0 auto;">
+                    <img src="images/The_Multiscale_Microfluidics_Lab_Logo.png" width="250px" alt="The_Multiscale_Microfluidics_Lab_Logo.png">
+                </div>
+
+                <div style="display: block;">
+                    <p>We are currently setting up a microfludics laboratory to study multiscale behaviors of flow
+                        and reactive transport through porous media. Our capabilities will range from 3D-printing model
+                        porous media (with features at the 10's-of-microns scale) to performing tracer-tracking and
+                        micro-PIV experiments using PDMS microfluidic chips. We anticipate focusing our experimental
+                        efforts on 1.) discovering novel flow and reactive transport phenomena that inspire multiscale
+                        model and methodology development, and 2.) calibrating and validing the multiscale models and
+                        methodologies developed in our group. If you are interested in combining theory with
+                        experiments, and have experience in microfluidics or the aforementioned
+                        capabilities, we encourage you to get in touch with Kyle using the Contact tab.
+                    </p>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+
+
+    <!--Publications Tab-->
+    <section id="publications" class="tab-content">
+        <div class="tab-container">
+            
+            <h2>Publications</h2>
+            <ol class="reversed-list" reversed>
+                <li>K. Pietrzyk, <a href="https://www.sciencedirect.com/science/article/abs/pii/S0309170825000727" target="_blank"> The rigorous upscaling of advection-dominated transport in heterogeneous porous media via the Method of Finite Averages</a>, <em>Adv. Water Resour.</em>, 200, 104958, 2025. </li>
+                <li>K. Pietrzyk, <a href="https://www.sciencedirect.com/science/article/abs/pii/S0309170824000769" target="_blank"> The Method of Finite Averages: A rigorous upscaling methodology for heterogeneous porous media</a>, <em>Adv. Water Resour.</em>, 188, 104689, 2024.</li>
+                <li>K. Pietrzyk, G. Bucci, M. Behandish, and I. Battiato, <a href="https://www.sciencedirect.com/science/article/abs/pii/S1877750323001941" target="_blank"> Automated upscaling via symbolic computing for thermal runaway analysis in Li-ion battery modules</a>, <em>J. Comput. Sci.-Neth.</em>, 74, 102134, 2023.</li>
+                <li>K. Pietrzyk and I. Battiato, <a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2023WR034894" target="_blank"> Automated symbolic upscaling: 2. Model generation for extended applicability regimes</a>, <em>Water Resour. Res.</em>, 59, e2023WR034894, 2023.</li>
+                <li>K. Pietrzyk and I. Battiato, <a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2022WR033600" target="_blank"> Automated symbolic upscaling: 1. Model generation for extended applicability regimes</a>, <em>Water Resour. Res.</em>, 59, e2022WR033600, 2023.</li>
+                <li>K. Pietrzyk, J. Horwitz, F. Najjar, and R. Minich, <a href="https://pubs.aip.org/aip/pof/article/34/1/013316/2845879" target="_blank"> On analysis and stochastic modeling of the particle kinetic energy equation in particle-laden isotropic turbulent flows</a>, <em>Phys. Fluids</em>, 34, 013316, 2022. <strong> (Featured Article)</strong></li>
+                <li>K. Pietrzyk, S. Korneev, M. Behandish, and I. Battiato, <a href="https://link.springer.com/article/10.1007/s11242-021-01628-9" target="_blank"> Upscaling and Automation: Pushing the Boundaries of Multiscale Modeling through Symbolic Computing: An Introduction to Symbolica</a>, <em>Transport Porous Med.</em>, 140, 313-349, 2021.</li>
+                <li>K. Pietrzyk and I. Battiato, <a href="https://arxiv.org/abs/2005.00132" target="_blank"> Outer streaming within a two-dimensional channel</a>, <em>arXiv</em>, phyics.flu-dyn, 2005.00132, 2020.</li>
+                <li>K. Pietrzyk, H. Nganguia, C. Datt, L. Zhu, G. Elfring, and O.S. Pak, <a href="https://www.sciencedirect.com/science/article/abs/pii/S0377025719300436"> Flow around a squirmer in a shear-thinning fluid</a>, <em>J. Non-Newton Fluid</em>, 268, 101-110, 2019.</li>
+                <li>H. Nganguia, K. Pietrzyk, and O.S. Pak, <a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.96.062606"> Swimming efficiency in a shear-thinning fluid</a>, <em>Phys. Rev. E</em>, 96, 062606, 2017.</li>
+                <li>Z. Peng, Y. Ding, K. Pietrzyk, G. Elfring, and O.S. Pak, <a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.96.012907">Propulsion via flexible flapping in granular media</a>, <em>Phys. Rev. E</em>, 96, 012907, 2017.</li>
+                <li>K. Pietrzyk, J. Soares, B. Ohara, and H. Lee, <a href="https://www.sciencedirect.com/science/article/abs/pii/S0306261916312958">Power generation modeling for a wearable thermoelectric energy harvester with practical limitations</a>, <em>Appl. Energ.</em>, 183, 218-228, 2016.</li>
+                <li>K. Pietrzyk, B. Ohara, T. Watson, M. Gee, D. Avalos, and H. Lee, <a href="https://www.sciencedirect.com/science/article/abs/pii/S0306261916312958">Thermoelectric module design strategy for solid-state refrigeration</a>, <em>Energy</em>, 114, 823-832, 2016.</li>
+            </ol>
+        
+        </div>
+    </section>
+
+
+
+    <!--People Tab-->
+    <section id="people" class="tab-content">
+        <div class="tab-container">
+            
+            <h2>Team</h2>
+
+            <div class="people-container">
+                <div class="person-profile-container">
+                    <img src="images/Kyle_Pietrzyk.png" alt="Kyle_Pietrzyk" class="circular-photo">
+                    <div class="person-profile-label-container">
+                        <h2>Kyle Pietrzyk</h2>
+                        <p>Principal Investigator</p>
+                    </div>
+                </div>
+            
+                <div class="person-profile-container">
+                    <img src="https://media.istockphoto.com/id/1345388323/vector/human-silhouette-isolated-vector-icon.jpg?s=612x612&w=0&k=20&c=a1wg9LYywdqDUG-t9rifrf16XEdWZbWe7ajuYxJTxEI=" alt="Silhouette_Profile" class="circular-photo">
+                    <div class="person-profile-label-container">
+                        <h2>Join the team!</h2>
+                        <p>Use the Contact tab to get in touch and learn more!</p>
+                    </div>
+                </div>
+                
+                <div class="person-profile-container">
+                    <img src="https://media.istockphoto.com/id/1345388323/vector/human-silhouette-isolated-vector-icon.jpg?s=612x612&w=0&k=20&c=a1wg9LYywdqDUG-t9rifrf16XEdWZbWe7ajuYxJTxEI=" alt="Silhouette_Profile" class="circular-photo">
+                    <div class="person-profile-label-container">
+                        <h2>Join the team!</h2>
+                        <p>Use the Contact tab to get in touch and learn more!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 50px;">
+                <h2>Interested in Joining the Team?</h2>
+            </div>
+            
+            <h3>Postdoctoral Scholars</h3>
+            <p>Instructions to be posted in the near future; stay tuned!</p>
+            
+            <h3>Graduate Students: PhD and Masters</h3>
+            <p>Instructions to be posted in the near future; stay tuned!</p>
+            
+            <h3>Undergraduate Students</h3>
+            <p>Instructions to be posted in the near future; stay tuned!</p>
+            
+            <!--<p>Students interested in pursuing a graduate degree should apply to the CEE graduate program. Specify
+                Kyle as a potential faculty member you would like to work with on your application. </p>-->
+            
+        </div>
+    </section>
+
+
+
+    <!--Resources Tab-->
+    <section id="resources" class="tab-content">
+        <div class="tab-container">
+            
+            <h2>Open-sourced Codes</h2>
+            
+            <div class="resource-container">
+                <div class="resource-entry-container">
+                    <a href="https://github.com/ibattiat/Symbolica" target="_blank"><h2>Symbolica</h2></a>
+                    <p>Symbolica is a symbolic computational code that automates multiscale model development for physical
+                        dynamics in porous media via Homogenization Theory. In other words, given a system of differential equations
+                        that describe the governing physics at the pore scale, Symbolica automatically implements Homogenization
+                        Theory and outputs an upscaled system that predicts the coarse-scale physical behaviors in the porous medium.
+                        Symbolica is written in Mathematica and has been open-sourced on Github.</p>
+                </div>
+                <div class="resource-entry-container">
+                    <a href="https://github.com/pietrzyk1/MoFA" target="_blank"><h2>Method of Finite Averages (MoFA)</h2></a>
+                    <p>The Method of Finite Averages (MoFA) is a multiscale modeling methodology for modeling physical dynamics in
+                        heterogeneous porous media. A variety of MoFA models have been developed and implemented in the finite
+                        element software, MFEM. These implementations have been open-sourced on Github.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!--Contact Tab-->
+    <section id="contact" class="tab-content">
+        <div class="tab-container">
+            
+            <p>Information to be posted in the near future; stay tuned! </p>
+            
+        </div>
+    </section>
+
+  <footer>
+    &copy; 2025 Kyle Pietrzyk
+  </footer>
+
+  <script>
+    function showTab(tabId) {
+      const tabs = document.querySelectorAll('.tab-content');
+      const buttons = document.querySelectorAll('.tab-button');
+
+      tabs.forEach(tab => {
+        tab.classList.remove('active');
+      });
+
+      buttons.forEach(button => {
+        button.classList.remove('active');
+      });
+
+      document.getElementById(tabId).classList.add('active');
+      event.currentTarget.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>
