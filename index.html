@@ -224,14 +224,38 @@
     }
     .cropped-gif {
         width: 485px;
-        height: 50px; /*42px*/
+        height: 50px;
         overflow: hidden;
         position: relative;
     }
-    .cropped-gif img {
+    .gif-container {
+        width: 440px;
+        aspect-ratio: 10 / 3;
+        overflow: hidden;
+        position: relative;
+        margin: 0 auto;
+    }
+    .gif-container-wide {
+        aspect-ratio: 2 / 1;
+    }
+    .gif-sprite {
         position: absolute;
-        bottom: -42px; /*-35px*/
-        left: -84px; /*-70px*/
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    @keyframes gif-play-research {
+        from { background-position: 0 0; }
+        to   { background-position: 0 -5000px; }
+    }
+    @keyframes gif-play-gallery {
+        from { background-position: 0 0; }
+        to { background-position: 0 -13332px; }
+    }
+    @keyframes gif-play-gallery-wide {
+        from { background-position: 0 0; }
+        to { background-position: 0 -22000px; }
     }
     .research-figure {
         display: block;
@@ -334,6 +358,38 @@
         line-height: 1.6;
     }
 
+    .gallery-pair {
+        display: flex;
+        gap: 20px;
+    }
+    .gallery-pair-item {
+        flex: 1;
+        min-width: 0;
+    }
+    .gallery-pair-item img {
+        width: 100%;
+        height: auto;
+        border-radius: var(--radius);
+    }
+    .gallery-caption {
+        margin-top: 8px;
+        color: var(--text-muted);
+        font-size: 14px;
+        text-align: center;
+    }
+    .gallery-item .gallery-item-title {
+        margin: 0 0 12px 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text);
+    }
+    .gallery-item-titled {
+        padding-top: 26px;
+    }
+    .gallery-item:not(:last-child) {
+        margin-bottom: 20px;
+    }
+    .dir-mobile { display: none; }
 
     /*Hyperlink appearance*/
     a {
@@ -442,21 +498,6 @@
             width: 100%;
             max-width: 485px;
         }
-        .cropped-gif {
-            width: 100%;
-            height: 50px;
-        }
-        @supports (aspect-ratio: 1) {
-            .cropped-gif {
-                height: auto;
-                aspect-ratio: 485 / 50;
-            }
-        }
-        .cropped-gif img {
-            width: 123.71%;
-            left: -17.32%;
-            bottom: -84%;
-        }
         .people-container {
             grid-template-columns: repeat(2, 1fr);
         }
@@ -464,6 +505,11 @@
             grid-column: span 2;
             justify-self: center;
         }
+        .gallery-pair {
+            flex-direction: column;
+        }
+        .dir-desktop { display: none; }
+        .dir-mobile { display: inline; }
     }
 
     @media (max-width: 600px) {
@@ -501,6 +547,7 @@
         <button class="tab-button" onclick="showTab('publications', event)">Publications</button>
         <button class="tab-button" onclick="showTab('people', event)">People</button>
         <button class="tab-button" onclick="showTab('resources', event)">Resources</button>
+        <button class="tab-button" onclick="showTab('gallery', event)">Gallery</button>
         <button class="tab-button" onclick="showTab('contact', event)">Contact</button>
         </div>
     </nav>
@@ -558,16 +605,18 @@
             <div class="research-item-container">
                 <div class="research-gif-container">
                     <p class="research-caption">Pore-scale Concentration</p>
+                    <div class="gif-sync-group">
                     <div class="cropped-gif">
-                        <img src="images/MoFA_Porescale2.gif" width="600px" loading="eager" alt="MoFA_Porescale2.gif">
+                        <div class="gif-sprite" style="background-image: url('images/MoFA_Porescale2_sprite.png'); background-size: 485px 5000px; animation: gif-play-research 6s steps(100) infinite;"></div>
                     </div>
                     <p class="research-caption">Average Pore-scale Concentration</p>
                     <div class="cropped-gif">
-                        <img src="images/MoFA_Avg_Porescale2.gif" width="600px" loading="eager" alt="MoFA_Avg_Porescale2.gif">
+                        <div class="gif-sprite" style="background-image: url('images/MoFA_Avg_Porescale2_sprite.png'); background-size: 485px 5000px; animation: gif-play-research 6s steps(100) infinite;"></div>
                     </div>
                     <p class="research-caption">MoFA Model Average Concentration</p>
                     <div class="cropped-gif">
-                        <img src="images/MoFA_Upscaled2.gif" width="600px" loading="eager" alt="MoFA_Upscaled2.gif">
+                        <div class="gif-sprite" style="background-image: url('images/MoFA_Upscaled2_sprite.png'); background-size: 485px 5000px; animation: gif-play-research 6s steps(100) infinite;"></div>
+                    </div>
                     </div>
                     <p class="research-caption description">Advective-diffusive transport through
                         fractured media for an oscillating inlet concentration on the left boundary. The MoFA model
@@ -815,6 +864,68 @@
 
 
 
+    <!--Gallery Tab-->
+    <section id="gallery" class="tab-content">
+        <div class="tab-container">
+            <h2>Gallery</h2>
+            <div class="capsule gallery-item gallery-item-titled">
+                <h3 class="gallery-item-title">Transport through fractured media</h3>
+                <div class="gallery-pair">
+                    <div class="gallery-pair-item">
+                        <div class="gif-container">
+                            <div class="gif-sprite"
+                                 style="background-image: url(images/porescale_fracture_transport_sprite.png); background-size: 440px 13332px; animation: gif-play-gallery 6.06s steps(101) infinite;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gallery-pair-item">
+                        <div class="gif-container">
+                            <div class="gif-sprite"
+                                 style="background-image: url(images/MoFA_fracture_transport_sprite.png); background-size: 440px 13332px; animation: gif-play-gallery 6.06s steps(101) infinite;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="gallery-caption">Pore-scale (<span class="dir-desktop">left</span><span class="dir-mobile">top</span>) and MoFA (<span class="dir-desktop">right</span><span class="dir-mobile">bottom</span>) model simulations of advective-diffusive transport through a fracture and surrounding media. Pe ~ 1000 within the fracture. The MoFA model captures the average concentration in each averaging region to within ~0.04 absolute error.</p>
+            </div>
+            <div class="capsule gallery-item gallery-item-titled">
+                <h3 class="gallery-item-title">Transport through sintered iron (small scale)</h3>
+                <div class="gallery-pair">
+                    <div class="gallery-pair-item">
+                        <div class="gif-container gif-container-wide">
+                            <div class="gif-sprite"
+                                 style="background-image: url(images/porescale_sintered_iron_sprite.png); background-size: 440px 22000px; animation: gif-play-gallery-wide 6s steps(100) infinite;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gallery-pair-item">
+                        <div class="gif-container gif-container-wide">
+                            <div class="gif-sprite"
+                                 style="background-image: url(images/MoFA_sintered_iron_sprite.png); background-size: 440px 22000px; animation: gif-play-gallery-wide 6s steps(100) infinite;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="gallery-caption">Pore-scale (<span class="dir-desktop">left</span><span class="dir-mobile">top</span>) and MoFA (<span class="dir-desktop">right</span><span class="dir-mobile">bottom</span>) model simulations of advective-diffusive transport through sintered iron. Pe = 2000 at the repeated geometry scale. The MoFA model captures the average concentration in each averaging region to within ~0.01 absolute error.</p>
+            </div>
+            <div class="capsule gallery-item gallery-item-titled">
+                <h3 class="gallery-item-title">Transport through sintered iron (larger scale)</h3>
+                <div class="gallery-pair">
+                    <div class="gallery-pair-item">
+                        <img src="images/Large_advective_transport_Pe2000_constantInput.gif" alt="Large-scale constant input transport simulation">
+                    </div>
+                    <div class="gallery-pair-item">
+                        <img src="images/Large_advective_transport_Pe2000_pulseInput.gif" alt="Large-scale pulse input transport simulation">
+                    </div>
+                </div>
+                <p class="gallery-caption">MoFA model simulations of advective-diffusive transport through sintered iron for a uniform, constant injection (<span class="dir-desktop">left</span><span class="dir-mobile">top</span>) and a narrowed, pulsed injection (<span class="dir-desktop">right</span><span class="dir-mobile">bottom</span>). Pe = 2000 at the repeated geometry scale. Simulations were run on a laptop core in ~20 seconds.</p>
+            </div>
+
+        </div>
+    </section>
+
+
+
     <!--Contact Tab-->
     <section id="contact" class="tab-content">
         <div class="tab-container">
@@ -856,9 +967,43 @@
       event.currentTarget.classList.add('active');
 
       document.getElementById('main-nav').classList.remove('menu-open');
+      if (tabId === 'gallery' || tabId === 'research') requestAnimationFrame(scaleGalleryGifs);
     }
   </script>
 
+
+
+<script>
+var _lastPW = [];
+function scaleGalleryGifs() {
+    var all = [
+        { sel: '.gif-container', base: 440 },
+        { sel: '.cropped-gif', base: 485 }
+    ];
+    var idx = 0;
+    for (var g = 0; g < all.length; g++) {
+        var containers = document.querySelectorAll(all[g].sel);
+        for (var i = 0; i < containers.length; i++) {
+            var pw = containers[i].parentElement.offsetWidth;
+            if (pw > 0 && _lastPW[idx] !== pw) {
+                _lastPW[idx] = pw;
+                containers[i].style.zoom = pw / all[g].base;
+            }
+            idx++;
+        }
+    }
+}
+scaleGalleryGifs();
+var _raf;
+window.addEventListener('resize', function() {
+    if (!_raf) {
+        _raf = requestAnimationFrame(function() {
+            scaleGalleryGifs();
+            _raf = null;
+        });
+    }
+});
+</script>
 
 </body>
 </html>
